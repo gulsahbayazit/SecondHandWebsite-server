@@ -8,15 +8,25 @@ require("./db");
 // Handles http requests (express is node js framework)
 // https://www.npmjs.com/package/express
 const express = require("express");
-
+// Middleware
+const { isAuthenticated } = require("./middleware/jwt.middleware");
 const app = express();
 
 // ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
 require("./config")(app);
 
 // 👇 Start handling routes here
-const indexRoutes = require("./routes/index.routes");
-app.use("/api", indexRoutes);
+//UserRouter
+
+const userRouter = require("./routes/user.routes");
+app.use("/api", isAuthenticated, userRouter);
+
+const authRouter = require("./routes/auth.routes");
+app.use("/auth", authRouter);
+
+//ProductRouter
+const productRouter = require("./routes/product.routes");
+app.use("/", isAuthenticated, productRouter);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
