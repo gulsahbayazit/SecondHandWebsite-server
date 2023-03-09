@@ -122,15 +122,15 @@ router.post("/purchase", async (req, res) => {
               User.findByIdAndUpdate(userid, {
                 totalPoints: user.totalPoints + price,
               })
-                // .then(() => {
-                //   Product.findByIdAndRemove(id)
-                .then(() =>
-                  res.json({
-                    message: `Product with ${id} is deleted successfully`,
-                  })
-                )
-                // .catch((error) => console.log(error));
-                // })
+                .then(() => {
+                  Product.findByIdAndRemove(id)
+                    .then(() =>
+                      res.json({
+                        message: `Product with ${id} is deleted successfully`,
+                      })
+                    )
+                    .catch((error) => console.log(error));
+                })
                 .catch((error) => console.log(error));
             })
             .catch((error) => console.log(error));
